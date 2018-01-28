@@ -1,0 +1,61 @@
+<script>
+    import wepy from 'wepy';
+    import 'wepy-async-function';
+    import { setStore } from 'wepy-redux';
+    import configStore from './store';
+
+    const store = configStore();
+
+    setStore(store);
+
+    export default class extends wepy.app {
+        config = {
+            pages: [
+                'pages/index'
+            ],
+            window: {
+                backgroundTextStyle: 'light',
+                navigationBarBackgroundColor: '#fff',
+                navigationBarTitleText: 'WeChat',
+                navigationBarTextStyle: 'black'
+            }
+        }
+
+        globalData = {
+            userInfo: null
+        }
+
+        constructor () {
+            super();
+            this.use('requestfix');
+        }
+
+        onLaunch() {
+        }
+
+        getUserInfo(cb) {
+            const that = this;
+
+            if (this.globalData.userInfo) {
+                return this.globalData.userInfo;
+            }
+
+            return wepy.getUserInfo({
+                success (res) {
+                    that.globalData.userInfo = res.userInfo;
+                    if (cb) cb(res.userInfo);
+                }
+            });
+        }
+    }
+</script>
+
+<style lang="sass">
+.container
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+</style>
