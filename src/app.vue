@@ -28,34 +28,28 @@
         constructor () {
             super();
             this.use('requestfix');
+            this.use('promisify');
         }
 
         onLaunch() {
         }
 
-        getUserInfo(cb) {
+        async getUserInfo() {
             const that = this;
 
             if (this.globalData.userInfo) {
                 return this.globalData.userInfo;
             }
 
-            return wepy.getUserInfo({
-                success (res) {
-                    that.globalData.userInfo = res.userInfo;
-                    if (cb) cb(res.userInfo);
-                }
-            });
+            const data = await wepy.getUserInfo();
+
+            that.globalData.userInfo = data.userInfo;
+
+            return data;
         }
     }
 </script>
 
 <style lang="sass">
-.container
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
+@import './stylesheet/main.sass'
 </style>

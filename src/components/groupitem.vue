@@ -3,10 +3,10 @@
 }
 </style>
 <template>
-  <view class="groupitem">
-    --<text class="id">{{gitem.childid}}.</text>
-    <text class="name" @tap="tap"> {{gitem.childname}}</text>
-  </view>
+    <view class="groupitem">
+        --<text class="id">{{gitem.childid}}.</text>
+        <text class="name" @tap="tap"> {{gitem.childname}}</text>
+    </view>
 </template>
 <script>
   import wepy from 'wepy';

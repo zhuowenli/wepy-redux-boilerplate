@@ -7,41 +7,13 @@
 
         <panel>
             <view class="title" slot="title">其它测试</view>
-            <button @tap="toast" size="mini">第三方组件</button>
             <button @tap="communicate" size="mini">组件通信</button>
             <button @tap="tap" size="mini">混合TAP事件</button>
         </panel>
 
         <panel>
-        <view class="title" slot="title">测试并发网络请求</view>
-        <view>返回结果: <text>{{netrst}}</text></view>
-        </panel>
-
-        <panel>
-        <view class="title" slot="title">测试组件</view>
-
-        <text class="testcounter">计数组件1: </text>
-        <view class="counterview">
-            <counter1 @index-emit="counterEmit" />
-        </view>
-
-        <text class="testcounter">计数组件2: </text>
-
-        <view class="counterview">
-            <counter2 :num.sync="mynum"></counter2>
-        </view>
-        </panel>
-
-        <panel>
-        <view class="title" slot="title">测试组件Repeat</view>
-            <repeat for="{{groupList}}" index="index" item="item" key="key">
-                <group :grouplist="item" :indexa="index"></group>
-            </repeat>
-        </panel>
-
-        <panel>
-            <view class="title" slot="title">测试列表</view>
-            <list></list>
+            <view class="title" slot="title">测试并发网络请求</view>
+            <view>返回结果: <text>{{netrst}}</text></view>
         </panel>
 
         <Toast />
@@ -93,50 +65,6 @@
             setTimeoutTitle: '标题三秒后会被修改',
             count: 0,
             netrst: '',
-            groupList: [
-                {
-                    id: 1,
-                    name: '点击改变',
-                    list: [
-                        {
-                            childid: '1.1',
-                            childname: '子项，点我改变'
-                        }, {
-                            childid: '1.2',
-                            childname: '子项，点我改变'
-                        }, {
-                            childid: '1.3',
-                            childname: '子项，点我改变'
-                        }
-                    ]
-                },
-                {
-                    id: 2,
-                    name: '点击改变',
-                    list: [
-                        {
-                            childid: '2.1',
-                            childname: '子项，点我改变'
-                        }, {
-                            childid: '2.2',
-                            childname: '子项，点我改变'
-                        }, {
-                            childid: '2.3',
-                            childname: '子项，点我改变'
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    name: '点击改变',
-                    list: [
-                        {
-                            childid: '3.1',
-                            childname: '子项，点我改变'
-                        }
-                    ]
-                }
-            ]
         }
 
         computed = {
@@ -148,6 +76,7 @@
         methods = {
             plus () {
                 this.mynum += 1;
+                console.log(this.mynum);
             },
             toast () {
                 const promise = this.$invoke('toast', 'show', {
@@ -180,22 +109,14 @@
             }
         }
 
-        onLoad() {
-            const self = this;
-            this.$parent.getUserInfo((userInfo) => {
-                if (userInfo) {
-                    self.userInfo = userInfo;
-                }
-                self.normalTitle = '标题已被修改';
+        async onLoad() {
+            const userInfo = await this.$parent.getUserInfo();
 
-                self.setTimeoutTitle = '标题三秒后会被修改';
-                setTimeout(() => {
-                    self.setTimeoutTitle = '到三秒了';
-                    self.$apply();
-                }, 3000);
+            if (userInfo) {
+                this.userInfo = userInfo;
+            }
 
-                self.$apply();
-            });
+            this.$apply();
         }
     }
 </script>

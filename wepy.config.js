@@ -27,7 +27,18 @@ module.exports = {
             outputStyle: 'compressed',
             indentSyntax: true
         },
-        babel: {},
+        babel: {
+            sourceMap: true,
+            presets: [
+                'env'
+            ],
+            plugins: [
+                'transform-class-properties',
+                'transform-decorators-legacy',
+                'transform-object-rest-spread',
+                'transform-export-extensions'
+            ]
+        },
         pug: {
             pretty: true
         }
